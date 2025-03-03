@@ -13,8 +13,7 @@ import { useEffect, useState } from "react";
 export default function Home() {
   return (
     <SessionProvider>
-      <main
-        className="flex min-h-screen flex-col items-center justify-center p-4"
+      <div className="min-h-screen relative"
         style={{
           backgroundColor: "var(--bg)",
           backgroundImage: "radial-gradient(var(--border) 2px, transparent 0)",
@@ -23,26 +22,39 @@ export default function Home() {
           backgroundAttachment: "fixed"
         }}
       >
-        <Toaster position="top-center" />
-        <div className="max-w-4xl w-full">
-          <div className="mb-8 relative w-fit mx-auto">
-            <div className="absolute inset-0 bg-[#000] translate-x-2 translate-y-2 rounded-base"></div>
-            <div className="bg-[var(--main)] border-2 border-black py-2 px-6 rounded-base relative">
-              <h1 className="text-2xl md:text-3xl font-bold text-center text-[var(--mtext)] flex items-center justify-center gap-3">
-                <Image
-                  src="/logo-dark.svg"
-                  alt="Linear Logo"
-                  width={32}
-                  height={32}
-                  className="inline-block"
-                />
-                Linear AI Issue Creator
-              </h1>
+        <main className="flex flex-col items-center justify-center p-4 py-8 pb-16">
+          <Toaster position="top-center" />
+          <div className="max-w-4xl w-full">
+            <div className="mb-8 relative w-fit mx-auto">
+              <div className="absolute inset-0 bg-[#000] translate-x-2 translate-y-2 rounded-base"></div>
+              <div className="bg-[var(--main)] border-2 border-black py-2 px-6 rounded-base relative">
+                <h1 className="text-2xl md:text-3xl font-bold text-center text-[var(--mtext)] flex items-center justify-center gap-3">
+                  <Image
+                    src="/logo-dark.svg"
+                    alt="Linear Logo"
+                    width={32}
+                    height={32}
+                    className="inline-block"
+                  />
+                  Linear AI Issue Creator
+                </h1>
+              </div>
+            </div>
+            <AuthenticatedContent />
+          </div>
+        </main>
+
+        {/* Fixed footer that stays at the bottom of the viewport */}
+        <div className="fixed bottom-0 left-0 right-0 w-full z-10">
+          <div className="w-full py-2 border-t bg-white shadow-md">
+            <div className="container mx-auto px-4">
+              <p className="text-xs text-gray-600 text-center font-medium">
+                <strong>Disclaimer:</strong> This is an example application and is not affiliated with, endorsed by, or connected to Linear. All product names, logos, and brands are property of their respective owners.
+              </p>
             </div>
           </div>
-          <AuthenticatedContent />
         </div>
-      </main>
+      </div>
     </SessionProvider>
   );
 }

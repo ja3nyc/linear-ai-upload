@@ -18,7 +18,7 @@ const Command = React.forwardRef<
   <CommandPrimitive
     ref={ref}
     className={cn(
-      "flex h-full w-full flex-col overflow-hidden rounded-base border-2 border-border bg-main font-base text-mtext",
+      "flex h-full w-full flex-col overflow-hidden rounded-base border-2 border-border bg-white font-base text-mtext",
       className,
     )}
     {...props}
@@ -124,10 +124,10 @@ const CommandItem = React.forwardRef<
     ref={ref}
     className={clsx(
       cn(
-        "relative flex cursor-default select-none items-center rounded-base px-2 py-1.5 text-sm text-mtext outline-border",
+        "relative flex hover:bg-main cursor-default select-none items-center rounded-base px-2 py-1.5 text-sm text-mtext outline-border",
         className,
       ),
-      "outline-0 outline aria-selected:outline-2",
+      "outline-0 aria-selected:outline-2",
     )}
     {...props}
   />
@@ -150,12 +150,6 @@ CommandShortcut.displayName = "CommandShortcut"
 
 export {
   Command,
-  CommandDialog,
-  CommandInput,
-  CommandList,
-  CommandEmpty,
-  CommandGroup,
-  CommandItem,
-  CommandShortcut,
-  CommandSeparator,
+  CommandDialog, CommandEmpty,
+  CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator, CommandShortcut
 }

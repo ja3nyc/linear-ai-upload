@@ -1,5 +1,7 @@
 # Linear AI Issue Creator
 
+> **Disclaimer**: This is an example application intended for educational purposes. It is not affiliated with, endorsed by, or connected to Linear. All product names, logos, and brands mentioned are property of their respective owners.
+
 This application allows users to upload images to automatically create Linear issues using Google AI. It analyzes the uploaded images and creates structured Linear issues with titles, descriptions, priorities, and tags.
 
 ## Features

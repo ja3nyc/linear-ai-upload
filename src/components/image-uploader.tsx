@@ -70,6 +70,14 @@ interface ContentData {
     previewUrl?: string;
 }
 
+// Add this helper component near the top of the component
+const RequiredLabel = ({ children }: { children: React.ReactNode }) => (
+    <div className="flex items-center gap-1">
+        {children}
+        <span className="text-red-500">*</span>
+    </div>
+);
+
 export default function ImageUploader() {
     const { data: session } = useSession();
     const [content, setContent] = useState<ContentData | null>(null);
@@ -666,18 +674,21 @@ export default function ImageUploader() {
                         <CardDescription>
                             Upload images/PDFs, paste text or paste screenshots to create Linear issues
                         </CardDescription>
+                        <p className="text-sm text-gray-500 mt-1">Fields marked with <span className="text-red-500">*</span> are required</p>
                     </CardHeader>
                     <CardContent className="space-y-6">
                         {/* Team Selection */}
                         <div className="space-y-2">
                             <div className="space-y-2 relative">
-                                <Label htmlFor="team" className="font-bold text-base">Select Team</Label>
+                                <Label htmlFor="team" className="font-bold text-base">
+                                    <RequiredLabel>Select Team</RequiredLabel>
+                                </Label>
                                 <Select
                                     value={selectedTeam || ''}
                                     onValueChange={handleTeamChange}
                                     disabled={isLoading || teams.length === 0}
                                 >
-                                    <SelectTrigger className="w-full">
+                                    <SelectTrigger className="neo-button w-full justify-between bg-white px-3 py-2">
                                         <SelectValue placeholder="Select a team" />
                                     </SelectTrigger>
                                     <SelectContent>
@@ -707,7 +718,7 @@ export default function ImageUploader() {
                                         onValueChange={setSelectedProject}
                                         disabled={isLoadingProjects}
                                     >
-                                        <SelectTrigger className="w-full">
+                                        <SelectTrigger className="neo-button w-full justify-between bg-white px-3 py-2">
                                             <SelectValue placeholder={
                                                 isLoadingProjects
                                                     ? "Loading projects..."
@@ -750,7 +761,7 @@ export default function ImageUploader() {
                                     onValueChange={setSelectedUser}
                                     disabled={isLoadingUsers}
                                 >
-                                    <SelectTrigger className="w-full">
+                                    <SelectTrigger className="neo-button w-full justify-between bg-white px-3 py-2">
                                         <SelectValue placeholder={
                                             isLoadingUsers
                                                 ? "Loading users..."
@@ -777,13 +788,15 @@ export default function ImageUploader() {
 
                             {/* Status Selection */}
                             <div className="space-y-2 relative">
-                                <Label htmlFor="state" className="font-bold text-base">Status</Label>
+                                <Label htmlFor="state" className="font-bold text-base">
+                                    <RequiredLabel>Status</RequiredLabel>
+                                </Label>
                                 <Select
                                     value={selectedState || ''}
                                     onValueChange={setSelectedState}
                                     disabled={!selectedTeam || isLoadingStates}
                                 >
-                                    <SelectTrigger className="w-full">
+                                    <SelectTrigger className="neo-button w-full justify-between bg-white px-3 py-2">
                                         <SelectValue placeholder={
                                             isLoadingStates
                                                 ? "Loading states..."
@@ -814,7 +827,8 @@ export default function ImageUploader() {
                                 <Popover>
                                     <PopoverTrigger asChild>
                                         <Button
-                                            className="w-full justify-between px-3 py-2 h-auto"
+                                            role="combobox"
+                                            className="neo-button w-full justify-between bg-white px-3 py-2"
                                             disabled={!selectedTeam || isLoadingLabels}
                                         >
                                             {selectedLabels.length > 0
@@ -842,7 +856,7 @@ export default function ImageUploader() {
                                                             />
                                                             <div
                                                                 className="w-3 h-3 rounded-full mr-2"
-                                                                style={{ backgroundColor: `#${label.color}` }}
+                                                                style={{ backgroundColor: label.color }}
                                                             />
                                                             <span>{label.name}</span>
                                                         </CommandItem>
@@ -861,26 +875,29 @@ export default function ImageUploader() {
                             </div>
                         </div>
 
-                        {/* Title Format Input */}
+                        {/* Title Format */}
                         <div className="space-y-2">
                             <Label htmlFor="titleFormat" className="font-bold text-base">Title Format (Optional)</Label>
-                            <div className="space-y-1">
-                                <Input
-                                    id="titleFormat"
-                                    placeholder="e.g., feat(area): Title or bug(component): Description"
-                                    value={titleFormat}
-                                    onChange={handleTitleFormatChange}
-                                />
-                                <p className="text-xs text-gray-500">
-                                    Define how you want your issue titles formatted. AI will follow this pattern. Examples:
-                                    <br />
-                                    <code className="bg-gray-100 px-1 rounded">feat(UI): Title</code> or <code className="bg-gray-100 px-1 rounded">bug(api): Description</code>
-                                </p>
+                            <Input
+                                id="titleFormat"
+                                value={titleFormat}
+                                onChange={handleTitleFormatChange}
+                                placeholder="e.g., feat(area): Title or bug(component): Description"
+                                className="neo-input w-full"
+                            />
+                            <div className="text-xs text-gray-500">
+                                Define how you want your issue titles formatted. AI will follow this pattern. Examples:
+                                <div className="font-mono mt-1">feat(UI): Title or bug(api): Description</div>
                             </div>
                         </div>
 
                         {/* Content Input Tabs */}
                         <Tabs defaultValue="upload" className="w-full mt-2" onValueChange={setActiveTab}>
+                            <div className="flex items-center mb-1">
+                                <Label className="font-bold text-base">
+                                    <RequiredLabel>Content</RequiredLabel>
+                                </Label>
+                            </div>
                             <TabsList className="grid w-full grid-cols-2 border-2 border-black p-1">
                                 <TabsTrigger value="upload">Upload/Paste Image</TabsTrigger>
                                 <TabsTrigger value="text">Enter Text</TabsTrigger>
@@ -938,7 +955,7 @@ export default function ImageUploader() {
                                             <Button
                                                 variant="neutral"
                                                 size="sm"
-                                                className="absolute top-2 right-2"
+                                                className="neo-button absolute top-2 right-2"
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                     handleClear();
@@ -970,7 +987,7 @@ export default function ImageUploader() {
                                     <Textarea
                                         ref={textAreaRef}
                                         placeholder="Enter or paste text describing the issue... You can also paste images here!"
-                                        className="min-h-[200px]"
+                                        className="neo-input min-h-[200px] w-full"
                                         onChange={handleTextInput}
                                     />
                                     <div className="text-xs text-gray-500 mt-1">
@@ -1025,7 +1042,7 @@ export default function ImageUploader() {
                                 variant="noShadow"
                                 onClick={handlePrevIssue}
                                 disabled={currentIssueIndex === 0}
-                                className="bg-gray-200 border-black text-black"
+                                className="neo-button bg-gray-200 border-black text-black"
                             >
                                 <ChevronLeft className="h-4 w-4 mr-1" />
                                 Previous Issue
@@ -1037,7 +1054,7 @@ export default function ImageUploader() {
                                 variant="noShadow"
                                 onClick={handleNextIssue}
                                 disabled={currentIssueIndex === analysisResults.length - 1}
-                                className="bg-gray-200 border-black text-black"
+                                className="neo-button bg-gray-200 border-black text-black"
                             >
                                 Next Issue
                                 <ChevronRight className="h-4 w-4 ml-1" />
@@ -1061,7 +1078,7 @@ export default function ImageUploader() {
                                             <CardDescription>Review and edit the issue details before creating it in Linear</CardDescription>
                                         </div>
                                         <Button
-                                            className="bg-gray-200 border-black text-black"
+                                            className="neo-button bg-gray-200 border-black text-black"
                                             onClick={() => setIsEditing(!isEditing)}
                                         >
                                             {isEditing ? "Preview Mode" : "Edit Mode"}
@@ -1113,9 +1130,9 @@ export default function ImageUploader() {
                                                 <Label htmlFor="title" className="font-medium">Title</Label>
                                                 <Input
                                                     id="title"
-                                                    value={currentAnalysis?.title || ""}
+                                                    value={currentAnalysis?.title || ''}
                                                     onChange={handleTitleChange}
-                                                    className="w-full border-black"
+                                                    className="neo-input w-full"
                                                 />
                                             </div>
                                             <div className="space-y-2">
@@ -1125,7 +1142,7 @@ export default function ImageUploader() {
                                                         <button
                                                             type="button"
                                                             onClick={() => insertMarkdown('# $1')}
-                                                            className="px-2 py-1 bg-gray-100 text-xs rounded hover:bg-gray-200 transition-colors"
+                                                            className="px-2 py-1 neo-button text-xs"
                                                             title="Heading"
                                                         >
                                                             Heading
@@ -1133,7 +1150,7 @@ export default function ImageUploader() {
                                                         <button
                                                             type="button"
                                                             onClick={() => insertMarkdown('**$1**')}
-                                                            className="px-2 py-1 bg-gray-100 text-xs rounded hover:bg-gray-200 transition-colors"
+                                                            className="px-2 py-1 neo-button text-xs"
                                                             title="Bold"
                                                         >
                                                             Bold
@@ -1141,7 +1158,7 @@ export default function ImageUploader() {
                                                         <button
                                                             type="button"
                                                             onClick={() => insertMarkdown('*$1*')}
-                                                            className="px-2 py-1 bg-gray-100 text-xs rounded hover:bg-gray-200 transition-colors"
+                                                            className="px-2 py-1 neo-button text-xs"
                                                             title="Italic"
                                                         >
                                                             Italic
@@ -1149,7 +1166,7 @@ export default function ImageUploader() {
                                                         <button
                                                             type="button"
                                                             onClick={() => insertMarkdown('- $1')}
-                                                            className="px-2 py-1 bg-gray-100 text-xs rounded hover:bg-gray-200 transition-colors"
+                                                            className="px-2 py-1 neo-button text-xs"
                                                             title="List"
                                                         >
                                                             List
@@ -1157,7 +1174,7 @@ export default function ImageUploader() {
                                                         <button
                                                             type="button"
                                                             onClick={() => insertMarkdown('```\n$1\n```')}
-                                                            className="px-2 py-1 bg-gray-100 text-xs rounded hover:bg-gray-200 transition-colors"
+                                                            className="px-2 py-1 neo-button text-xs"
                                                             title="Code Block"
                                                         >
                                                             Code
@@ -1165,7 +1182,7 @@ export default function ImageUploader() {
                                                         <button
                                                             type="button"
                                                             onClick={() => insertMarkdown('[Link Text](url)')}
-                                                            className="px-2 py-1 bg-gray-100 text-xs rounded hover:bg-gray-200 transition-colors"
+                                                            className="px-2 py-1 neo-button text-xs"
                                                             title="Link"
                                                         >
                                                             Link
@@ -1174,9 +1191,9 @@ export default function ImageUploader() {
                                                 </div>
                                                 <Textarea
                                                     id="description"
-                                                    value={currentAnalysis?.description || ""}
+                                                    value={currentAnalysis?.description || ''}
                                                     onChange={handleDescriptionChange}
-                                                    className="w-full border-black min-h-[150px]"
+                                                    className="neo-input min-h-[200px] w-full"
                                                 />
                                                 <p className="text-xs text-gray-500">
                                                     <span className="font-medium">Markdown supported:</span> Use # for headings, ** for bold, * for italic, ` for code, etc.
@@ -1188,7 +1205,7 @@ export default function ImageUploader() {
                                                     value={currentAnalysis?.priority?.toString() || "2"}
                                                     onValueChange={handlePriorityChange}
                                                 >
-                                                    <SelectTrigger id="priority" className="w-full border-black">
+                                                    <SelectTrigger id="priority" className="neo-button w-full justify-between bg-white px-3 py-2">
                                                         <SelectValue placeholder="Select priority" />
                                                     </SelectTrigger>
                                                     <SelectContent>
