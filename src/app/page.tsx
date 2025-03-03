@@ -5,6 +5,7 @@ import { SessionProvider } from "@/components/providers/session-provider";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Toaster } from "@/components/ui/sonner";
+import { getBaseUrl } from "@/utils/urlHelpers";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -59,19 +60,8 @@ function AuthenticatedContent() {
         return;
       }
 
-      // Determine the base URL with proper protocol
-      let baseUrl;
-      if (process.env.NEXT_PUBLIC_VERCEL_URL) {
-        // Add https:// to VERCEL_URL since it doesn't include the protocol
-        baseUrl = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
-      } else if (process.env.NEXT_PUBLIC_APP_URL) {
-        // Use NEXT_PUBLIC_APP_URL if available (should include protocol)
-        baseUrl = process.env.NEXT_PUBLIC_APP_URL;
-      } else {
-        // Fall back to browser's location
-        baseUrl = window.location.origin;
-      }
-
+      // Use the utility function to get the base URL
+      const baseUrl = getBaseUrl();
       const redirectUri = `${baseUrl}/api/auth/callback/linear-oauth`;
       const state = Math.random().toString(36).substring(7);
 

@@ -1,3 +1,4 @@
+import { getBaseUrl } from "@/utils/urlHelpers";
 import { LinearClient } from "@linear/sdk";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -6,10 +7,11 @@ export async function GET(request: NextRequest) {
         // Get authorization code from URL
         const url = new URL(request.url);
         const code = url.searchParams.get("code");
+        const baseUrl = getBaseUrl();
 
         if (!code) {
             return NextResponse.redirect(
-                new URL(`/?error=NoCodeProvided`, request.url)
+                new URL(`${baseUrl}/?error=NoCodeProvided`)
             );
         }
 
@@ -18,21 +20,7 @@ export async function GET(request: NextRequest) {
         // Exchange code for token
         const tokenUrl = "https://api.linear.app/oauth/token";
 
-        // Determine the base URL with proper protocol
-        let baseUrl;
-        if (process.env.VERCEL_URL) {
-            // Add https:// to VERCEL_URL since it doesn't include the protocol
-            baseUrl = `https://${process.env.VERCEL_URL}`;
-        } else if (process.env.NEXTAUTH_URL) {
-            // Use NEXTAUTH_URL if available
-            baseUrl = process.env.NEXTAUTH_URL;
-        } else {
-            // Fall back to a reasonable default or error
-            return NextResponse.redirect(
-                new URL(`/?error=MissingBaseUrl`, request.url)
-            );
-        }
-
+        // Use the utility function to get the base URL
         const redirectUri = `${baseUrl}/api/auth/callback/linear-oauth`;
 
         // Create form data for x-www-form-urlencoded content
@@ -58,7 +46,7 @@ export async function GET(request: NextRequest) {
             const errorText = await tokenResponse.text();
             console.error("Token exchange failed:", tokenResponse.status, errorText);
             return NextResponse.redirect(
-                new URL(`/?error=TokenExchangeFailed&details=${encodeURIComponent(errorText)}`, request.url)
+                new URL(`${baseUrl}/?error=TokenExchangeFailed&details=${encodeURIComponent(errorText)}`)
             );
         }
 
@@ -69,7 +57,7 @@ export async function GET(request: NextRequest) {
         if (!tokens.access_token) {
             console.error("No access token in response");
             return NextResponse.redirect(
-                new URL(`/?error=NoAccessToken`, request.url)
+                new URL(`${baseUrl}/?error=NoAccessToken`)
             );
         }
 
@@ -94,14 +82,15 @@ export async function GET(request: NextRequest) {
 
         // Redirect to the auth callback page with all needed info in URL
         const response = NextResponse.redirect(
-            new URL(`/auth/linear-callback?${params.toString()}`, request.url)
+            new URL(`${baseUrl}/auth/linear-callback?${params.toString()}`)
         );
 
         return response;
     } catch (error) {
         console.error("Linear OAuth callback error:", error);
+        const baseUrl = getBaseUrl();
         return NextResponse.redirect(
-            new URL(`/?error=AuthenticationFailed`, request.url)
+            new URL(`${baseUrl}/?error=AuthenticationFailed`)
         );
     }
 } 

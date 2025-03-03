@@ -40,14 +40,26 @@ This application allows users to upload images to automatically create Linear is
    LINEAR_CLIENT_SECRET=your-linear-client-secret
    NEXT_PUBLIC_LINEAR_CLIENT_ID=your-linear-client-id
 
-   # NextAuth Configuration
-   NEXTAUTH_URL=http://localhost:3000 # only used for development, if you are running on Vercel, you can leave it blank, if you are running on another platform, you can use the platform's URL or hardcode it here
+   # URL Configuration
+   # For production deployment with custom domain:
+   NEXT_PUBLIC_APP_URL=https://your-app-domain.com
+   # Note: VERCEL_URL is automatically set by Vercel
 
+   # Auth Secret
    NEXTAUTH_SECRET=generate-a-random-string-here
 
    # Google AI Configuration  
    GOOGLE_API_KEY=your-google-ai-api-key
    ```
+
+   **URL Configuration Note:**
+   - For **production with custom domain**: Set `NEXT_PUBLIC_APP_URL` to your full URL (including https://)
+   - For **Vercel deployments**: If you don't set NEXT_PUBLIC_APP_URL, the app will use VERCEL_URL automatically
+   - For **local development**: The app will use your local URL automatically
+   - The URL resolution follows this priority:
+     1. `NEXT_PUBLIC_APP_URL` (if set)
+     2. `VERCEL_URL` (automatically set by Vercel)
+     3. Browser's `window.location.origin` (for local development)
 
 ### Installation
 
@@ -61,6 +73,16 @@ This application allows users to upload images to automatically create Linear is
    npm run dev
    ```
 4. Open [http://localhost:3000](http://localhost:3000) in your browser
+
+### Developer Notes
+
+#### URL Handling
+The application uses a centralized approach for URL resolution with the `getBaseUrl()` helper function in `src/utils/urlHelpers.ts`. When working with URLs:
+
+- All redirects and URL construction should use this function to ensure consistency
+- The function handles all environment contexts (development, Vercel deployment, custom domains)
+
+This approach ensures the same URL logic is applied throughout the application, preventing redirect mismatches in the OAuth flow.
 
 ## Usage
 
