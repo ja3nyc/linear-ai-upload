@@ -75,7 +75,7 @@ This application allows users to upload images to automatically create Linear is
 
 ## Technologies Used
 
-- Next.js 14 with App Router
+- Next.js 15 with App Router
 - TypeScript
 - Tailwind CSS
 - shadcn/ui components
