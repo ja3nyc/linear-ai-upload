@@ -59,7 +59,20 @@ function AuthenticatedContent() {
         return;
       }
 
-      const redirectUri = `${window.location.origin}/api/auth/callback/linear-oauth`;
+      // Determine the base URL with proper protocol
+      let baseUrl;
+      if (process.env.NEXT_PUBLIC_VERCEL_URL) {
+        // Add https:// to VERCEL_URL since it doesn't include the protocol
+        baseUrl = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
+      } else if (process.env.NEXT_PUBLIC_APP_URL) {
+        // Use NEXT_PUBLIC_APP_URL if available (should include protocol)
+        baseUrl = process.env.NEXT_PUBLIC_APP_URL;
+      } else {
+        // Fall back to browser's location
+        baseUrl = window.location.origin;
+      }
+
+      const redirectUri = `${baseUrl}/api/auth/callback/linear-oauth`;
       const state = Math.random().toString(36).substring(7);
 
       const params = new URLSearchParams({

@@ -17,7 +17,23 @@ export async function GET(request: NextRequest) {
 
         // Exchange code for token
         const tokenUrl = "https://api.linear.app/oauth/token";
-        const redirectUri = `${process.env.VERCEL_URL ?? process.env.NEXTAUTH_URL}/api/auth/callback/linear-oauth`;
+
+        // Determine the base URL with proper protocol
+        let baseUrl;
+        if (process.env.VERCEL_URL) {
+            // Add https:// to VERCEL_URL since it doesn't include the protocol
+            baseUrl = `https://${process.env.VERCEL_URL}`;
+        } else if (process.env.NEXTAUTH_URL) {
+            // Use NEXTAUTH_URL if available
+            baseUrl = process.env.NEXTAUTH_URL;
+        } else {
+            // Fall back to a reasonable default or error
+            return NextResponse.redirect(
+                new URL(`/?error=MissingBaseUrl`, request.url)
+            );
+        }
+
+        const redirectUri = `${baseUrl}/api/auth/callback/linear-oauth`;
 
         // Create form data for x-www-form-urlencoded content
         const formData = new URLSearchParams();

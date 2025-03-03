@@ -25,7 +25,7 @@ This application allows users to upload images to automatically create Linear is
    - Go to your Linear workspace settings
    - Navigate to "API" → "OAuth applications"
    - Create a new OAuth application
-   - Set the redirect URI to: `http://localhost:3000/api/auth/callback/linear-oauth`
+   - Set the redirect URI to: `http://localhost:3000/api/auth/callback/linear-oauth` or whatever your development URL is
    - Copy the Client ID and Client Secret
 
 2. **Google AI Setup**:
