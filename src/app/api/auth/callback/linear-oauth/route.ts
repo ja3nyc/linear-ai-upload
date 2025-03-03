@@ -17,7 +17,7 @@ export async function GET(request: NextRequest) {
 
         // Exchange code for token
         const tokenUrl = "https://api.linear.app/oauth/token";
-        const redirectUri = `${process.env.NEXTAUTH_URL}/api/auth/callback/linear-oauth`;
+        const redirectUri = `${process.env.VERCEL_URL ?? process.env.NEXTAUTH_URL}/api/auth/callback/linear-oauth`;
 
         // Create form data for x-www-form-urlencoded content
         const formData = new URLSearchParams();

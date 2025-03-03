@@ -38,18 +38,15 @@ This application allows users to upload images to automatically create Linear is
    # Linear OAuth Configuration
    LINEAR_CLIENT_ID=your-linear-client-id
    LINEAR_CLIENT_SECRET=your-linear-client-secret
-   LINEAR_REDIRECT_URI=http://localhost:3000/api/auth/callback/linear-oauth
    NEXT_PUBLIC_LINEAR_CLIENT_ID=your-linear-client-id
 
    # NextAuth Configuration
-   NEXTAUTH_URL=http://localhost:3000
+   NEXTAUTH_URL=http://localhost:3000 # only used for development, if you are running on Vercel, you can leave it blank, if you are running on another platform, you can use the platform's URL or hardcode it here
+
    NEXTAUTH_SECRET=generate-a-random-string-here
 
    # Google AI Configuration  
    GOOGLE_API_KEY=your-google-ai-api-key
-
-   # App Base URL
-   NEXT_PUBLIC_APP_URL=http://localhost:3000
    ```
 
 ### Installation
