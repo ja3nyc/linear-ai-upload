@@ -936,32 +936,40 @@ export default function ImageUploader() {
                                             </div>
                                         </div>
                                     ) : (
-                                        <div className="relative w-full max-h-[200px] rounded-lg overflow-hidden bg-gray-100">
-                                            {content.type === 'image' ? (
-                                                <div className="h-[180px] relative">
-                                                    <Image
-                                                        src={content.previewUrl}
-                                                        alt="Preview"
-                                                        fill
-                                                        style={{ objectFit: "contain" }}
-                                                    />
+                                        <div className="flex items-center justify-between w-full p-3 bg-white border-2 border-black rounded shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+                                            <div className="flex items-center gap-3">
+                                                {content.type === 'pdf' ? (
+                                                    <div className="w-10 h-10 bg-gray-100 rounded border border-black flex items-center justify-center">
+                                                        <FileText className="w-6 h-6 text-gray-600" />
+                                                    </div>
+                                                ) : (
+                                                    <div className="w-10 h-10 bg-gray-100 rounded border border-black overflow-hidden">
+                                                        <Image
+                                                            src={content.previewUrl}
+                                                            alt="Preview"
+                                                            width={40}
+                                                            height={40}
+                                                            style={{ objectFit: "cover" }}
+                                                        />
+                                                    </div>
+                                                )}
+                                                <div className="flex flex-col items-start">
+                                                    <span className="text-sm font-medium">{content.file?.name}</span>
+                                                    <span className="text-xs text-gray-500">
+                                                        {content.type === 'pdf' ? 'PDF Document' : 'Image'}
+                                                    </span>
                                                 </div>
-                                            ) : content.type === 'pdf' ? (
-                                                <div className="flex items-center justify-center h-[100px]">
-                                                    <FileText className="w-12 h-12 text-gray-400" />
-                                                    <p className="ml-2 text-gray-700 text-sm">{content.file?.name}</p>
-                                                </div>
-                                            ) : null}
+                                            </div>
                                             <Button
                                                 variant="neutral"
-                                                size="sm"
-                                                className="neo-button absolute top-2 right-2"
+                                                size="icon"
+                                                className="h-8 w-8 bg-white border-2 border-black rounded shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] flex items-center justify-center hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] transition-all"
                                                 onClick={(e) => {
                                                     e.stopPropagation();
                                                     handleClear();
                                                 }}
                                             >
-                                                <X className="h-4 w-4" />
+                                                <X className="h-4 w-4 text-black" />
                                             </Button>
                                         </div>
                                     )}
